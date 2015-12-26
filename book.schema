@@ -1,0 +1,6 @@
+CREATE TABLE orders (
+    timestamp           INTEGER PRIMARY KEY,
+    payout_address      TEXT NOT NULL,
+    usd_rate            REAL NOT NULL,
+    price               INTEGER NOT NULL           
+);
