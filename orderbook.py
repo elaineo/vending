@@ -6,6 +6,18 @@ from datetime import datetime, timedelta
 
 conn = apsw.Connection("book.db")
 
+def add_to_book(address, payment, is_buy=True):
+    # fetch book
+    book = get_order_book()
+    cost = book.get_quote(is_buy)
+
+    adj_payment = int(round(cost*payment))
+    order = Order(is_buy, payout_address, usd_rate, adj_payment)
+    add_order_book(order)
+
+    change = payment - adj_payment
+    return change
+
 def get_order_book():
     c = conn.cursor()
     c.execute("SELECT * FROM orders WHERE is_buy >= 0 ORDER BY created_at")
@@ -48,6 +60,18 @@ class OrderBook(object):
             return None
         else:
             return self.orders[0]
+
+    def net_options_out(self):
+        return len(buys), len(sells)
+
+    def get_quote(self, is_buy=True):
+        # calculate option price
+        num_buys, num_sells = self.net_options_out()
+        if is_buy:
+            cost = calc_cost(num_buys, num_sells, True)
+        else:
+            cost = calc_cost(num_buys, num_sells, False)
+        return cost
 
 class Order(object):
 

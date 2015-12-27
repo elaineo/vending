@@ -26,11 +26,10 @@ def cost_function(buys, sells):
     c = B_FACTOR * math.log( math.exp(buys/B_FACTOR) + math.exp(sells/B_FACTOR))
     return c
 
-def calc_cost(is_buy=True):
+def calc_cost(buys, sells, is_buy=True):
     """ calculate price given an order
         can only buy one at a time
     """
-    buys, sells = net_options_out()
     if is_buy:
         new_cost_func = cost_function(buys+1, sells)
     else:
