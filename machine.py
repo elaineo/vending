@@ -1,7 +1,6 @@
 import os 
 import json
 import requests
-import apsw
 
 # import flask web microframework
 from flask import Flask
@@ -22,7 +21,6 @@ PAYMENT_REQ = 1000
 CURR_PRICE = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
 # fetch current bitcoin price
-@app.route('/quote')
 def get_quote():
     q = requests.get(CURR_PRICE)
     if q.content:
@@ -30,6 +28,12 @@ def get_quote():
         usd = quote.get('bpi').get('USD')
         return usd.get('rate_float')
 
+# fetch current bitcoin price
+@app.route('/quote')
+def price_quote():
+    q = get_quote()
+    return '%.5f' % q
+    
 # buy a bitcoin option - require payment at max price, return the change
 @app.route('/buy')
 @payment.required(PAYMENT_REQ)
@@ -39,14 +43,19 @@ def purchase():
     # price movement: up or down
     action = request.args.get('action')
 
+    usd_rate = get_quote()
+
     # add to book
     if action == 'up':
-        change = add_to_book(client_payout_addr, PAYMENT_REQ, True)
+        change = add_to_book(client_payout_addr, PAYMENT_REQ, usd_rate, True)
     else:
-        change = add_to_book(client_payout_addr, PAYMENT_REQ, False)
+        change = add_to_book(client_payout_addr, PAYMENT_REQ, usd_rate, False)
+    return '%d' % change
 
-    # return the change
-    txid = wallet.send_to(client_payout_addr, change)
+@app.route('/show')
+def show_book():
+    book = get_order_book()
+    return json.dumps(book.dump_all())
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
