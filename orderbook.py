@@ -4,6 +4,8 @@
 import apsw
 from datetime import datetime, timedelta
 
+from price_rules import calc_cost
+
 conn = apsw.Connection("book.db")
 
 def add_to_book(address, payment, is_buy=True):
