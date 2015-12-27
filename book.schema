@@ -1,5 +1,7 @@
 CREATE TABLE orders (
-    timestamp           INTEGER PRIMARY KEY,
+    id                  INTEGER PRIMARY KEY,
+    created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_buy              INTEGER NOT NULL,
     payout_address      TEXT NOT NULL,
     usd_rate            REAL NOT NULL,
     price               INTEGER NOT NULL           

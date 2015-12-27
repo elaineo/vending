@@ -6,6 +6,8 @@ General cost function:
     q1 is the number of outstanding BUYERS
     q2 is the number of outstanding SELLERS
 
+    B_FACTOR is related to the market-maker's max loss for each 24-hour period.
+
     SPREAD is a constant that represents the "cut" taken by the market-maker.
 
     TODO: normalize q with regards to expiry date
@@ -14,7 +16,7 @@ import math
 import random
 import logging
 
-B_FACTOR = 90
+B_FACTOR = 90  # results in a max loss of about 10
 DEFAULT_SPREAD = 0.0
 DEFAULT_MIN = 0.01
 DEFAULT_MAX = 1.00
@@ -36,6 +38,7 @@ def calc_cost(is_buy=True):
     old_cost_func = cost_function(buys, sells)
     price = new_cost_func - old_cost_func
 
+    # add spread here if desired
     price_adj = price * (DEFAULT_MAX - DEFAULT_MIN) + DEFAULT_MIN
     return price_adj
 
