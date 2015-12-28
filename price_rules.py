@@ -13,17 +13,16 @@ General cost function:
     TODO: normalize q with regards to expiry date
 """
 import math
-import random
 import logging
 
-B_FACTOR = 90  # results in a max loss of about 10
+B_FACTOR = 15.000  # results in a max loss of about 10
 DEFAULT_SPREAD = 0.0
-DEFAULT_MIN = 0.01
-DEFAULT_MAX = 1.00
+DEFAULT_MIN = 0.001
+DEFAULT_MAX = 1.000
+RANGE = DEFAULT_MAX - DEFAULT_MIN
 
-def cost_function(buys, sells):
-    """ Returns the total amount that users have collectively spent so far """
-    c = B_FACTOR * math.log( math.exp(buys/B_FACTOR) + math.exp(sells/B_FACTOR))
+def price_function(q, buys, sells):
+    c = math.exp(q/B_FACTOR) / ( math.exp(buys/B_FACTOR) + math.exp(sells/B_FACTOR))
     return c
 
 def calc_cost(buys, sells, is_buy=True):
@@ -31,15 +30,13 @@ def calc_cost(buys, sells, is_buy=True):
         can only buy one at a time
     """
     if is_buy:
-        new_cost_func = cost_function(buys+1, sells)
+        price = price_function(buys, buys, sells)
     else:
-        new_cost_func = cost_function(buys, sells+1)
-    old_cost_func = cost_function(buys, sells)
-    price = new_cost_func - old_cost_func
+        price = price_function(sells, buys, sells)
 
-    # add spread here if desired
-    price_adj = price * (DEFAULT_MAX - DEFAULT_MIN) + DEFAULT_MIN
+    price_adj = (1 + DEFAULT_SPREAD) * price * RANGE + DEFAULT_MIN
     return price_adj
 
-#def net_options_out(key):
-    # count outstanding db items
+def calc_belief(buys, sells):
+    belief = price_function(buys, buys, sells)
+    return belief
