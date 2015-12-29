@@ -10,7 +10,7 @@ conn = apsw.Connection("book.db")
 
 def add_to_book(address, payment, usd_rate, is_buy=True):
     # fetch book
-    book = get_order_book()
+    book = get_order_book(usd_rate)
     cost = book.get_quote(is_buy)
 
     adj_payment = int(round(cost*payment))
@@ -20,12 +20,24 @@ def add_to_book(address, payment, usd_rate, is_buy=True):
     change = payment - adj_payment
     return change
 
-def get_order_book():
+def get_book_quote(usd_rate):
+    book = get_order_book(usd_rate=None)
+    buy_cost = book.get_quote(True)
+    sell_cost = book.get_quote(False)
+    return buy_cost, sell_cost
+
+def get_order_book(usd_rate=None):
     c = conn.cursor()
     orders = []
-    for is_buy, address, usd_rate, price in \
-        c.execute("SELECT is_buy, payout_address, usd_rate, price FROM orders \
-                    WHERE is_buy >= 0 ORDER BY created_at"):
+    if usd_rate:
+        query = "SELECT is_buy, payout_address, usd_rate, price FROM orders \
+                    WHERE (is_buy = 0 AND usd_rate <= %.5f) OR \
+                    (is_buy = 1 AND usd_rate >= %.5f) \
+                    ORDER BY created_at" % (usd_rate, usd_rate)
+    else:
+        query = "SELECT is_buy, payout_address, usd_rate, price FROM orders \
+                    WHERE is_buy >= 0 ORDER BY created_at"
+    for is_buy, address, usd_rate, price in c.execute(query):
         orders.append(Order(is_buy, address, usd_rate, price))
     return OrderBook(orders)
 
@@ -37,16 +49,6 @@ def add_order_book(order):
                         "payout_address": order.payout_address,
                         "usd_rate": order.usd_rate,
                         "price": order.price})
-
-
-def execute_orders():
-    # this should be in a transaction with payout
-    c = conn.cursor()
-    day_ago = datetime.now() - timedelta(hours=24)
-    c.execute("SELECT * FROM orders WHERE created_at >= ? ORDER BY created_at", day_ago)
-    orders = c.fetch_all()
-    c.execute("UPDATE orders SET is_buy = -1 WHERE created_at >= ?", day_ago)
-    return orders
 
 class OrderBook(object):
 
@@ -74,9 +76,9 @@ class OrderBook(object):
         # calculate option price
         num_buys, num_sells = self.net_options_out()
         if is_buy:
-            cost = calc_cost(num_buys, num_sells, True)
+            cost = calc_cost(num_buys+1, num_sells, True)
         else:
-            cost = calc_cost(num_buys, num_sells, False)
+            cost = calc_cost(num_buys, num_sells+1, False)
         return cost
 
     def dump_all(self):
