@@ -14,8 +14,8 @@ PaymentLock = threading.Lock()
 PaymentThread = threading.Thread()
 
 # remove for dev env
-# wallet = Wallet()
-wallet = None
+wallet = Wallet()
+# wallet = None
 
 PAYMENT_REQ = 1000
 CURR_PRICE = 'https://api.coindesk.com/v1/bpi/currentprice.json'
