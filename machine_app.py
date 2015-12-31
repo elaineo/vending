@@ -33,7 +33,7 @@ def vending_machine():
 
     def interrupt():
         global PaymentThread
-        PaymentThread.cancel()
+        #PaymentThread.cancel()
 
     def doPayment():
         global wallet
@@ -45,8 +45,8 @@ def vending_machine():
 
         with PaymentLock:
             PaymentLock.acquire()
-            #next_date = execute_payout(wallet, usd_rate, PAYMENT_REQ)
-            next_date = execute_mock(wallet, usd_rate, PAYMENT_REQ)
+            #next_date = execute_payout(conn, wallet, usd_rate, PAYMENT_REQ)
+            #next_date = execute_mock(conn, wallet, usd_rate, PAYMENT_REQ)
             Paymentlock.release()
 
         # Set the next event to happen
@@ -61,7 +61,7 @@ def vending_machine():
         PaymentThread.start()
 
     # Initiate
-    doPaymentStart()
+    # doPaymentStart()
     # clear the trigger for the next thread
     atexit.register(interrupt)
     return app

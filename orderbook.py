@@ -1,32 +1,29 @@
 """  OrderBook/db manager
 """
 
-import apsw
 from datetime import datetime, timedelta
 
 from price_rules import calc_cost
 
-conn = apsw.Connection("book.db")
-
-def add_to_book(address, payment, usd_rate, is_buy=True):
+def add_to_book(conn, address, payment, usd_rate, is_buy=True):
     # fetch book
-    book = get_order_book(usd_rate)
+    book = get_order_book(conn, usd_rate)
     cost = book.get_quote(is_buy)
 
     adj_payment = int(round(cost*payment))
     order = Order(is_buy, address, usd_rate, adj_payment)
-    add_order_book(order)
+    add_order_book(conn, order)
 
     change = payment - adj_payment
     return change
 
-def get_book_quote(usd_rate):
+def get_book_quote(conn, usd_rate):
     book = get_order_book(usd_rate=None)
     buy_cost = book.get_quote(True)
     sell_cost = book.get_quote(False)
     return buy_cost, sell_cost
 
-def get_order_book(usd_rate=None):
+def get_order_book(conn, usd_rate=None):
     c = conn.cursor()
     orders = []
     if usd_rate:
@@ -41,7 +38,7 @@ def get_order_book(usd_rate=None):
         orders.append(Order(is_buy, address, usd_rate, price))
     return OrderBook(orders)
 
-def add_order_book(order):
+def add_order_book(conn, order):
     c = conn.cursor()
     insert = "INSERT INTO orders(is_buy, payout_address, usd_rate, price) \
                     values(:is_buy, :payout_address, :usd_rate, :price)"
