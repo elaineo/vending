@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 # import from the 21 Developer Library
 from two1.commands.config import Config
@@ -31,11 +32,9 @@ def cmd_buy(action):
     print(r.text)
 
 if __name__ == '__main__':
-    if len(sys.argv) == 0:
-        cmd_btc_quote()
-    elif sys.argv[0] == 'quote':
+    if sys.argv[1] == 'quote':
         cmd_price_quote()
-    elif sys.argv[0] == 'buy':
-        cmd_buy(sys.argv[1])
+    elif sys.argv[1] == 'buy':
+        cmd_buy(sys.argv[2])
     else:
         cmd_price_quote()
