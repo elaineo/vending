@@ -18,7 +18,7 @@ def add_to_book(conn, address, payment, usd_rate, is_buy=True):
     return change
 
 def get_book_quote(conn, usd_rate):
-    book = get_order_book(usd_rate=None)
+    book = get_order_book(conn,usd_rate=None)
     buy_cost = book.get_quote(True)
     sell_cost = book.get_quote(False)
     return buy_cost, sell_cost
