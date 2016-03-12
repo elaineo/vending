@@ -3,14 +3,14 @@ info:
   description: 'Bitcoin Computer that sells 24-hour binary options on BTCUSD'
   x-21-quick-buy: '21 buy url http://67.188.115.215:5000/quote'
   x-21-category: entertainment
-  x-21-app-image:
+  x-21-app-image: ""
   x-21-total-price:
     min: 1000
     max: 1000
   contact:
     name: elaine
     email: elaine.ou@gmail.com
-host: 
+host: 67.188.115.215:5000
 schemes:
   - http
 basePath: /
