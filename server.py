@@ -62,7 +62,7 @@ def purchase():
     action = request.args.get('action')
 
     if not client_payout_address:
-        return "Required: payout_address"
+        return "Required: payout_address. You know, for when you win."
     if not action:
         return "Required: action"
 
