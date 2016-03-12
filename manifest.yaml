@@ -1,12 +1,54 @@
-basePath: /
-host: 10.244.241.76:5000
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
 info:
-  contact: {email: elaine.ou@gmail.com, name: elaine}
-  description: Bitcoin Computer that sells 24-hour binary options on BTCUSD
   title: Binary Options
-  x-21-app-image: ''
+  description: Bitcoin Computer that sells 24-hour binary options on BTCUSD
+  version: "1.0.0"
+  contact: {email: elaine.ou@gmail.com, name: elaine}
+  x-21-app-image: 'https://cdn.filepicker.io/api/file/cIKUn4hOSvqlxj7HPGAL'
   x-21-category: entertainment
-  x-21-quick-buy: 21 buy url http://10.244.241.76/quote
+  x-21-quick-buy: 21 buy url http://10.244.241.76:5000/quote
   x-21-total-price: {max: 1000, min: 1000}
+  x-21-github-profile-url: https://github.com/elaineo/vending
+# the domain of the service
+host: 10.244.241.76:5000
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /
+paths:
+  /quote:
+    get:
+      summary: Get price quote
+      description: |
+        Returns the current BTCUSD rate in USD, Buy price and Sell price in satoshis <br><br>
+        <b>Note: </b>Buying means the BTCUSD rate will be higher in 24 hours. Selling is a bet on a downward move.
+      responses:
+        200:
+          description: BTC/USD rate in USD
+          schema: 
+            type: "string"
+  /buy:
+    get:
+      summary: Buy a 24-hour binary option
+      description: |
+        Specify an action for the option. The price movement will be up or down.<br><br>
+        For example- <br>
+        <pre>/buy?action=up</pre>
+        This buys an option indicating that the BTCUSD rate will be higher tomorrow.<br>
+        
+      parameters:
+        - name: action
+          in: query
+          description: up/down
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: The amount paid in satoshis and the current BTCUSD price.
+          schema:
+            type: "string"
 schemes: [http]
 x-21-manifest-path: /manifest
