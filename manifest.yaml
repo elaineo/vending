@@ -23,8 +23,8 @@ paths:
     get:
       summary: Get price quote
       description: |
-        Returns the current BTCUSD rate in USD, Buy price and Sell price in satoshis <br><br>
-        <b>Note: </b>Buying means the BTCUSD rate will be higher in 24 hours. Selling is a bet on a downward move.
+        Returns the current BTCUSD rate in USD, Buy price and Sell price in satoshis.  
+        Buying means the BTCUSD rate will be higher in 24 hours. Selling is a bet on a downward move.
       responses:
         200:
           description: BTC/USD rate in USD
@@ -34,10 +34,10 @@ paths:
     get:
       summary: Buy a 24-hour binary option
       description: |
-        Specify an action for the option. The price movement will be up or down.<br><br>
-        For example- <br>
-        <pre>/buy?action=up</pre>
-        This buys an option indicating that the BTCUSD rate will be higher tomorrow.<br>
+        Specify an action for the option. The price movement will be up or down.
+        For example, 
+        /buy?action=up
+        This buys an option indicating that the BTCUSD rate will be higher tomorrow.
         
       parameters:
         - name: action
