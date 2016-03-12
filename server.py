@@ -72,5 +72,21 @@ def show_book():
     book = get_order_book(conn)
     return json.dumps(book.dump_all())
 
+@app.route('/manifest')
+def docs():
+    '''
+    Serves the app manifest to the 21 crawler.
+    '''
+    with open('manifest.yaml', 'r') as f:
+        manifest_yaml = yaml.load(f)
+    return json.dumps(manifest_yaml)
+
+@app.route('/client')
+def client():
+    '''
+    Provides an example client script.
+    '''
+    return send_from_directory('static', 'client.py')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
