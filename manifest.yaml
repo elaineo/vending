@@ -5,10 +5,7 @@ info:
   title: Binary Options
   description: Bitcoin Computer that sells 24-hour binary options on BTCUSD
   version: "1.0.0"
-  contact: {email: elaine.ou@gmail.com, name: elaine}
-  name: elaine
-  url: http://elaineou.com
-  email: elaine.ou@gmail.com
+  contact: {email: elaine.ou@gmail.com, name: elaine, url: http://elaineou.com}
   x-21-app-image: 'https://cdn.filepicker.io/api/file/cIKUn4hOSvqlxj7HPGAL'
   x-21-category: entertainment
   x-21-quick-buy: 21 buy url http://10.244.241.76:5000/quote
