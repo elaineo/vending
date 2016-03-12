@@ -6,11 +6,15 @@ info:
   description: Bitcoin Computer that sells 24-hour binary options on BTCUSD
   version: "1.0.0"
   contact: {email: elaine.ou@gmail.com, name: elaine}
+  name: elaine
+  url: http://elaineou.com
+  email: elaine.ou@gmail.com
   x-21-app-image: 'https://cdn.filepicker.io/api/file/cIKUn4hOSvqlxj7HPGAL'
   x-21-category: entertainment
   x-21-quick-buy: 21 buy url http://10.244.241.76:5000/quote
   x-21-total-price: {max: 1000, min: 1000}
-  x-21-github-profile-url: https://github.com/elaineo/vending
+  x-21-github-profile-url: https://github.com/elaineo
+  x-21-github-project-url: https://github.com/elaineo/vending
 # the domain of the service
 host: 10.244.241.76:5000
 # array of all schemes that your API supports
