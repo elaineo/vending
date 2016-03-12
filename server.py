@@ -61,6 +61,11 @@ def purchase():
     # price movement: up or down
     action = request.args.get('action')
 
+    if not client_payout_address:
+        return "Required: payout_address"
+    if not action:
+        return "Required: action"
+
     usd_rate = machine_app.get_quote()
 
     # add to book

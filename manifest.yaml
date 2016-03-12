@@ -49,6 +49,11 @@ paths:
           description: up/down
           required: true
           type: "string"
+        - name: payout_address
+          in: query
+          description: bitcoin address
+          required: true
+          type: "string"
       responses:
         200:
           description: The amount paid in satoshis and the current BTCUSD price.
