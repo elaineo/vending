@@ -1,6 +1,9 @@
 import json
 import requests
 
+from two1.lib.wallet import Wallet
+from two1.lib.bitserv.flask import Payment
+
 # import flask web microframework
 from flask import Flask
 
@@ -24,7 +27,7 @@ CURR_PRICE = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 def get_quote():
     q = requests.get(CURR_PRICE)
     if q.content:
-        quote = json.loads(q.content)
+        quote = json.loads(q.content.decode('utf-8'))
         usd = quote.get('bpi').get('USD')
         return usd.get('rate_float')
 
