@@ -22,7 +22,7 @@ PaymentThread = threading.Thread()
 wallet = Wallet()
 # wallet = None
 
-PAYMENT_REQ = 1000
+PAYMENT_REQ = 10000
 CURR_PRICE = 'https://api.coindesk.com/v1/bpi/currentprice.json'
 
 # fetch current bitcoin price

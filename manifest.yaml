@@ -14,7 +14,7 @@ info:
   x-21-app-image: 'https://cdn.filepicker.io/api/file/cIKUn4hOSvqlxj7HPGAL'
   x-21-category: entertainment
   x-21-quick-buy: "wget -O client.py http://10.244.241.76:5000/client \npython3 client.py quote\npython3 client.py buy <up/down>"
-  x-21-total-price: {max: 1000, min: 1000}
+  x-21-total-price: {max: 10000, min: 1000}
   x-21-keywords:
     - bitcoin
     - "binary options"

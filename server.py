@@ -75,7 +75,11 @@ def purchase():
     else:
         change = add_to_book(conn, client_payout_addr, machine_app.PAYMENT_REQ, usd_rate, False)
 
-    txid = machine_app.wallet.send_to(client_payout_addr, change)
+    try:
+        txid = machine_app.wallet.send_to(client_payout_addr, change)
+    except ValueError:
+        txid = machine_app.wallet.send_to(client_payout_addr, machine_app.PAYMENT_REQ)
+        return "Ugh, dust problem. Payment refunded"
     return "Paid %d. BTCUSD is currently %.5f and will go %s." % \
             (machine_app.PAYMENT_REQ - change, usd_rate, action)
 
