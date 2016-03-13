@@ -61,7 +61,7 @@ def purchase():
     # price movement: up or down
     action = request.args.get('action')
 
-    if not client_payout_address:
+    if not client_payout_addr:
         return "Required: payout_address. You know, for when you win."
     if not action:
         return "Required: action"
