@@ -32,7 +32,10 @@ def cmd_buy(action):
     print(r.text)
 
 if __name__ == '__main__':
-    if sys.argv[1] == 'quote':
+    if len(sys.argv) < 1:
+        "Usage: client.py buy [up/down]"
+        cmd_price_quote()
+    elif sys.argv[1] == 'quote':
         cmd_price_quote()
     elif sys.argv[1] == 'buy':
         cmd_buy(sys.argv[2])
