@@ -13,7 +13,7 @@ username = Config().username
 requests = BitTransferRequests(wallet, username)
 
 # server address
-SERVER_URL = 'http://localhost:5000/'
+SERVER_URL = 'http://10.244.241.76:5000'
 
 def cmd_btc_quote():
     url = SERVER_URL + 'btc_quote'
@@ -33,7 +33,7 @@ def cmd_buy(action):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        "Usage: client.py buy [up/down]"
+        "Usage: client.py buy <up/down>"
         cmd_price_quote()
     elif sys.argv[1] == 'quote':
         cmd_price_quote()
