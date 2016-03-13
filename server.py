@@ -7,6 +7,7 @@ import logging
 
 import sqlite3
 from flask import g
+from flask import send_from_directory
 
 # import from the 21 Developer Library
 from two1.lib.wallet import Wallet
